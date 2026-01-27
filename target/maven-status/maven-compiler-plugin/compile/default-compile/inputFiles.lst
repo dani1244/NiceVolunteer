@@ -1,0 +1,12 @@
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/main/java/pt/ua/nicevolunteers/volunteer/service/VolunteerService.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/main/java/pt/ua/nicevolunteers/volunteer/dto/CreateVolunteerRequest.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/main/java/pt/ua/nicevolunteers/volunteer/domain/Volunteer.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/main/java/pt/ua/nicevolunteers/volunteer/controller/VolunteerController.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/main/java/pt/ua/nicevolunteers/volunteer/domain/valueobject/Password.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/main/java/pt/ua/nicevolunteers/volunteer/domain/valueobject/Email.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/main/java/pt/ua/nicevolunteers/NiceVolunteersApplication.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/main/java/pt/ua/nicevolunteers/volunteer/dto/VolunteerResponse.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/main/java/pt/ua/nicevolunteers/volunteer/repository/VolunteerRepository.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/main/java/pt/ua/nicevolunteers/volunteer/domain/exception/WeakPasswordException.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/main/java/pt/ua/nicevolunteers/volunteer/domain/exception/InvalidEmailException.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/main/java/pt/ua/nicevolunteers/volunteer/controller/VolunteerRequest.java

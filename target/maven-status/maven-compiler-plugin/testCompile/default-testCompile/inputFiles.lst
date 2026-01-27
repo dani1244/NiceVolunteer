@@ -1,0 +1,12 @@
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/test/java/pt/ua/nicevolunteers/NiceVolunteersApplicationTests.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/test/java/pt/ua/nicevolunteers/volunteer/domain/valueobject/EmailTest.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/test/java/pt/ua/nicevolunteers/volunteer/bdd/VolunteerRegistrationSteps.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/test/java/pt/ua/nicevolunteers/volunteer/repository/VolunteerRepositoryTest.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/test/java/pt/ua/nicevolunteers/volunteer/controller/VolunteerControllerTest.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/test/java/pt/ua/nicevolunteers/CucumberTestRunner.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/test/java/pt/ua/nicevolunteers/TestNiceVolunteersApplication.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/test/java/pt/ua/nicevolunteers/volunteer/domain/valueobject/PasswordTest.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/test/java/pt/ua/nicevolunteers/config/TestSecurityConfig.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/test/java/pt/ua/nicevolunteers/volunteer/controller/VolunteerRegistrationRequest.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/test/java/pt/ua/nicevolunteers/volunteer/service/VolunteerServiceTest.java
+/home/mufasa/Secretária/Classes/TQS/Recurso/NiceVolunteer/src/test/java/pt/ua/nicevolunteers/TestcontainersConfiguration.java

@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: pt.ua.nicevolunteers.volunteer.repository.VolunteerRepositoryTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.679 s -- in pt.ua.nicevolunteers.volunteer.repository.VolunteerRepositoryTest
