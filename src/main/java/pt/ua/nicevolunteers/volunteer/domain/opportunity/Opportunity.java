@@ -3,7 +3,6 @@ package pt.ua.nicevolunteers.volunteer.domain.opportunity;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import pt.ua.nicevolunteers.volunteer.domain.exception.InvalidOpportunityException;
 
@@ -11,49 +10,42 @@ import pt.ua.nicevolunteers.volunteer.domain.exception.InvalidOpportunityExcepti
 public class Opportunity {
 
     @Id
-    @GeneratedValue
     private UUID id;
 
     private String title;
-    private String description;
-    private String location;
-    private int points;
     private String promoter;
+    private String description;
+    private int points;
+    private String location;
 
     protected Opportunity() {}
 
-    public Opportunity(String title, String description, String location, int points, String promoter) {
+    public Opportunity(String title, String promoter, String description, int points, String location) {
 
-        if (title == null || title.isBlank())
-            throw new InvalidOpportunityException("Title is mandatory");
+        if (title == null || title.isBlank()) {
+            throw new InvalidOpportunityException("Title is required");
+        }
 
-        if (description == null || description.isBlank())
-            throw new InvalidOpportunityException("Description is mandatory");
+        if (promoter == null || promoter.isBlank()) {
+            throw new InvalidOpportunityException("Promoter is required");
+        }
 
-        if (location == null || location.isBlank())
-            throw new InvalidOpportunityException("Location is mandatory");
-
-        if (promoter == null || promoter.isBlank())
-            throw new InvalidOpportunityException("Promoter is mandatory");
-
-        // REGRA DE DOMÍNIO: promotor tem de ser institucional UA
-        if (!promoter.toLowerCase().contains("ua.pt"))
-            throw new InvalidOpportunityException("Promoter must be an institutional UA organization");
-
-        if (points <= 0)
+        if (points <= 0) {
             throw new InvalidOpportunityException("Points must be positive");
+        }
 
+        this.id = UUID.randomUUID();
         this.title = title;
-        this.description = description;
-        this.location = location;
-        this.points = points;
         this.promoter = promoter;
+        this.description = description;
+        this.points = points;
+        this.location = location;
     }
 
     public UUID getId() { return id; }
     public String getTitle() { return title; }
-    public String getDescription() { return description; }
-    public String getLocation() { return location; }
-    public int getPoints() { return points; }
     public String getPromoter() { return promoter; }
+    public String getDescription() { return description; }
+    public int getPoints() { return points; }
+    public String getLocation() { return location; }
 }

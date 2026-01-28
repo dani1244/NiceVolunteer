@@ -15,25 +15,24 @@ public class OpportunityService {
         this.repository = repository;
     }
 
-    public Opportunity create(String title,
-                              String description,
-                              String promoter,
-                              int points,
-                              String email) {
+    public Opportunity create(String title, String description, String organization, int points, String contactEmail) {
 
         if (title == null || title.isBlank()) {
-            throw new InvalidOpportunityException("Title is mandatory");
+            throw new InvalidOpportunityException("Title cannot be empty");
         }
 
         if (points <= 0) {
             throw new InvalidOpportunityException("Points must be positive");
         }
 
-        if (!email.endsWith("@ua.pt")) {
+        boolean validOrganization = organization != null && organization.toUpperCase().contains("UA");
+        boolean validEmail = contactEmail != null && contactEmail.endsWith("@ua.pt");
+
+        if (!validOrganization && !validEmail) {
             throw new InvalidOpportunityException("Promoter must be an institutional UA organization");
         }
 
-        Opportunity opportunity = new Opportunity(title, description, promoter, points, email);
+        Opportunity opportunity = new Opportunity(title, description, organization, points, contactEmail);
         return repository.save(opportunity);
     }
 }
