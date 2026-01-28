@@ -27,17 +27,17 @@ public class ApplicationService {
     public void apply(UUID volunteerId, UUID opportunityId) {
 
         if (!volunteerRepository.existsById(volunteerId)) {
-            throw new InvalidApplicationException("Volunteer does not exist");
+            throw new InvalidApplicationException();
         }
 
         if (!opportunityRepository.existsById(opportunityId)) {
-            throw new InvalidApplicationException("Opportunity does not exist");
+            throw new InvalidApplicationException();
         }
 
         String key = volunteerId + ":" + opportunityId;
 
         if (applications.contains(key)) {
-            throw new InvalidApplicationException("Volunteer already applied to this opportunity");
+            throw new InvalidApplicationException();
         }
 
         applications.add(key);
