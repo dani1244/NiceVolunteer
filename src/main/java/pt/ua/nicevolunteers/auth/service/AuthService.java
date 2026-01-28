@@ -16,8 +16,9 @@ public class AuthService {
     }
 
     public void login(String email, String rawPassword) {
+
         Volunteer volunteer = volunteerRepository
-                .findByEmailValue(email)
+                .findByEmail(email)
                 .orElseThrow(InvalidCredentialsException::new);
 
         String hashedInput = Integer.toHexString(rawPassword.hashCode());

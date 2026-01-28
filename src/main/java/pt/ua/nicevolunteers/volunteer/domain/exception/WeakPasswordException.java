@@ -2,6 +2,10 @@ package pt.ua.nicevolunteers.volunteer.domain.exception;
 
 public class WeakPasswordException extends RuntimeException {
 
+    public WeakPasswordException() {
+        super();
+    }
+
     public WeakPasswordException(String message) {
         super(message);
     }

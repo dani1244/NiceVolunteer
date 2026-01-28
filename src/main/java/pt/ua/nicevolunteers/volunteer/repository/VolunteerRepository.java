@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import pt.ua.nicevolunteers.volunteer.domain.Volunteer;
 
 public interface VolunteerRepository extends JpaRepository<Volunteer, UUID> {
-    Optional<Volunteer> findByEmailValue(String email);
+    Optional<Volunteer> findByEmail(String email);
 }
