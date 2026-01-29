@@ -3,6 +3,8 @@ package pt.ua.nicevolunteers.volunteer.domain.opportunity;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import pt.ua.nicevolunteers.volunteer.domain.exception.InvalidOpportunityException;
 
@@ -18,9 +20,16 @@ public class Opportunity {
     private int points;
     private String location;
 
+    @Enumerated(EnumType.STRING)
+    private OpportunityStatus status;
+
     protected Opportunity() {}
 
     public Opportunity(String title, String promoter, String description, int points, String location) {
+        this(title, promoter, description, points, location, OpportunityStatus.OPEN);
+    }
+
+    public Opportunity(String title, String promoter, String description, int points, String location, OpportunityStatus status) {
 
         if (title == null || title.isBlank()) {
             throw new InvalidOpportunityException("Title is required");
@@ -40,6 +49,7 @@ public class Opportunity {
         this.description = description;
         this.points = points;
         this.location = location;
+        this.status = status;
     }
 
     public UUID getId() { return id; }
@@ -48,4 +58,20 @@ public class Opportunity {
     public String getDescription() { return description; }
     public int getPoints() { return points; }
     public String getLocation() { return location; }
+    public OpportunityStatus getStatus() { return status; }
+
+    public void close() {
+        this.status = OpportunityStatus.CLOSED;
+    }
+
+    public void complete() {
+        if (this.status != OpportunityStatus.OPEN) {
+            throw new InvalidOpportunityException("Only open opportunities can be completed");
+        }
+        this.status = OpportunityStatus.COMPLETED;
+    }
+
+    public boolean isOpen() {
+        return this.status == OpportunityStatus.OPEN;
+    }
 }

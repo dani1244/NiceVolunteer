@@ -1,7 +1,7 @@
 package pt.ua.nicevolunteers.volunteer.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +10,7 @@ import pt.ua.nicevolunteers.volunteer.domain.Volunteer;
 import pt.ua.nicevolunteers.volunteer.domain.exception.InvalidApplicationException;
 import pt.ua.nicevolunteers.volunteer.domain.exception.InvalidOpportunityException;
 import pt.ua.nicevolunteers.volunteer.domain.opportunity.Opportunity;
+import pt.ua.nicevolunteers.volunteer.domain.opportunity.OpportunityStatus;
 import pt.ua.nicevolunteers.volunteer.repository.OpportunityRepository;
 import pt.ua.nicevolunteers.volunteer.repository.VolunteerRepository;
 
@@ -27,12 +28,9 @@ class ActivityCompletionServiceTest {
 
     @Test
     void completeActivity_success() {
-        Volunteer v = volunteerRepository.save(
-                new Volunteer("Ana", "ana@ua.pt", "123456")
-        );
-
+        Volunteer v = volunteerRepository.save(new Volunteer("Ana", "ana@ua.pt", "123456"));
         Opportunity op = opportunityRepository.save(
-                new Opportunity("Apoio Evento", "Ajuda logística", "DETI", 20, "eventos@ua.pt")
+                new Opportunity("Apoio Evento", "eventos@ua.pt", "Desc", 20, "DETI", OpportunityStatus.OPEN)
         );
 
         service.apply(v.getId(), op.getId());
@@ -48,12 +46,9 @@ class ActivityCompletionServiceTest {
 
     @Test
     void completeActivity_nonAcceptedVolunteer_shouldFail() {
-        Volunteer v = volunteerRepository.save(
-                new Volunteer("Rui", "rui@ua.pt", "123456")
-        );
-
+        Volunteer v = volunteerRepository.save(new Volunteer("Rui", "rui@ua.pt", "123456"));
         Opportunity op = opportunityRepository.save(
-                new Opportunity("Workshop", "Suporte", "DETI", 10, "workshop@ua.pt")
+                new Opportunity("Workshop", "workshop@ua.pt", "Desc", 10, "DETI", OpportunityStatus.OPEN)
         );
 
         assertThrows(InvalidApplicationException.class, () ->
@@ -62,12 +57,9 @@ class ActivityCompletionServiceTest {
 
     @Test
     void completeActivity_wrongPromoter_shouldFail() {
-        Volunteer v = volunteerRepository.save(
-                new Volunteer("Ines", "ines@ua.pt", "123456")
-        );
-
+        Volunteer v = volunteerRepository.save(new Volunteer("Ines", "ines@ua.pt", "123456"));
         Opportunity op = opportunityRepository.save(
-                new Opportunity("Seminário", "Apoio", "DETI", 15, "seminarios@ua.pt")
+                new Opportunity("Seminário", "seminarios@ua.pt", "Desc", 15, "DETI", OpportunityStatus.OPEN)
         );
 
         service.apply(v.getId(), op.getId());
@@ -79,12 +71,9 @@ class ActivityCompletionServiceTest {
 
     @Test
     void completeActivity_twice_shouldFail() {
-        Volunteer v = volunteerRepository.save(
-                new Volunteer("Pedro", "pedro@ua.pt", "123456")
-        );
-
+        Volunteer v = volunteerRepository.save(new Volunteer("Pedro", "pedro@ua.pt", "123456"));
         Opportunity op = opportunityRepository.save(
-                new Opportunity("Feira", "Organização", "DETI", 30, "feira@ua.pt")
+                new Opportunity("Feira", "feira@ua.pt", "Desc", 30, "DETI", OpportunityStatus.OPEN)
         );
 
         service.apply(v.getId(), op.getId());

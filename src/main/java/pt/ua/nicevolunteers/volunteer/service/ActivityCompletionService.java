@@ -35,9 +35,11 @@ public class ActivityCompletionService {
 
     public void acceptApplication(UUID volunteerId, UUID opportunityId) {
         String key = volunteerId + ":" + opportunityId;
+
         if (!applications.contains(key)) {
-            throw new InvalidApplicationException();
+            throw new InvalidApplicationException("Volunteer did not apply to this opportunity");
         }
+
         accepted.add(key);
     }
 
@@ -46,25 +48,25 @@ public class ActivityCompletionService {
         String key = volunteerId + ":" + opportunityId;
 
         if (!accepted.contains(key)) {
-            throw new InvalidApplicationException();
+            throw new InvalidApplicationException("Volunteer was not accepted for this opportunity");
         }
 
         if (completed.contains(key)) {
-            throw new InvalidOpportunityException();
+            throw new InvalidOpportunityException("Activity already completed");
         }
 
-        Opportunity op = opportunityRepository.findById(opportunityId)
-                .orElseThrow(InvalidOpportunityException::new);
+        Opportunity opportunity = opportunityRepository.findById(opportunityId)
+                .orElseThrow(() -> new InvalidOpportunityException("Opportunity not found"));
 
-        if (!op.getLocation().equals(promoterEmail)) {
-            throw new InvalidOpportunityException();
+        if (!opportunity.getPromoter().equals(promoterEmail)) {
+            throw new InvalidOpportunityException("Invalid promoter");
         }
 
-        Volunteer v = volunteerRepository.findById(volunteerId)
-                .orElseThrow(InvalidApplicationException::new);
+        Volunteer volunteer = volunteerRepository.findById(volunteerId)
+                .orElseThrow(() -> new InvalidApplicationException("Volunteer not found"));
 
-        v.addPoints(op.getPoints());
-        volunteerRepository.save(v);
+        volunteer.addPoints(opportunity.getPoints());
+        volunteerRepository.save(volunteer);
 
         completed.add(key);
     }

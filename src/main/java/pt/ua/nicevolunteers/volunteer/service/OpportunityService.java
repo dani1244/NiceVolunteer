@@ -1,9 +1,12 @@
 package pt.ua.nicevolunteers.volunteer.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import pt.ua.nicevolunteers.volunteer.domain.exception.InvalidOpportunityException;
 import pt.ua.nicevolunteers.volunteer.domain.opportunity.Opportunity;
+import pt.ua.nicevolunteers.volunteer.domain.opportunity.OpportunityStatus;
 import pt.ua.nicevolunteers.volunteer.repository.OpportunityRepository;
 
 @Service
@@ -15,24 +18,34 @@ public class OpportunityService {
         this.repository = repository;
     }
 
-    public Opportunity create(String title, String description, String organization, int points, String contactEmail) {
+    public Opportunity createOpportunity(String title,
+                                         String promoter,
+                                         String description,
+                                         int points,
+                                         String location) {
 
-        if (title == null || title.isBlank()) {
-            throw new InvalidOpportunityException("Title cannot be empty");
+        if (promoter == null || !promoter.endsWith("@ua.pt")) {
+            throw new InvalidOpportunityException("Only institutional promoters allowed");
         }
 
-        if (points <= 0) {
-            throw new InvalidOpportunityException("Points must be positive");
+        Opportunity op = new Opportunity(title, promoter, description, points, location);
+        return repository.save(op);
+    }
+
+    public List<Opportunity> getOpenOpportunities() {
+        return repository.findByStatus(OpportunityStatus.OPEN);
+    }
+
+    public void closeOpportunity(Opportunity opportunity) {
+        if (!opportunity.isOpen()) {
+            throw new InvalidOpportunityException("Opportunity is not open");
         }
+        opportunity.close();
+        repository.save(opportunity);
+    }
 
-        boolean validOrganization = organization != null && organization.toUpperCase().contains("UA");
-        boolean validEmail = contactEmail != null && contactEmail.endsWith("@ua.pt");
-
-        if (!validOrganization && !validEmail) {
-            throw new InvalidOpportunityException("Promoter must be an institutional UA organization");
-        }
-
-        Opportunity opportunity = new Opportunity(title, description, organization, points, contactEmail);
-        return repository.save(opportunity);
+    public void completeOpportunity(Opportunity opportunity) {
+        opportunity.complete();
+        repository.save(opportunity);
     }
 }
