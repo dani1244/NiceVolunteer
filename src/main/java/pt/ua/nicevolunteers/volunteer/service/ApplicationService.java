@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.annotation.PostConstruct;
 import pt.ua.nicevolunteers.volunteer.domain.exception.InvalidApplicationException;
 import pt.ua.nicevolunteers.volunteer.repository.OpportunityRepository;
 import pt.ua.nicevolunteers.volunteer.repository.VolunteerRepository;
@@ -16,12 +17,17 @@ public class ApplicationService {
     private final VolunteerRepository volunteerRepository;
     private final OpportunityRepository opportunityRepository;
 
-    private final Set<String> applications = new HashSet<>();
+    private Set<String> applications;
 
     public ApplicationService(VolunteerRepository volunteerRepository,
                               OpportunityRepository opportunityRepository) {
         this.volunteerRepository = volunteerRepository;
         this.opportunityRepository = opportunityRepository;
+    }
+
+    @PostConstruct
+    public void init() {
+        this.applications = new HashSet<>();
     }
 
     public void apply(UUID volunteerId, UUID opportunityId) {

@@ -18,12 +18,12 @@ class OpportunityServiceTest {
 
     @Test
     void createOpportunity_success() {
-        Opportunity op = service.create(
+        Opportunity op = service.createOpportunity(
                 "Apoio a Conferência",
+                "eventos@ua.pt",
                 "Ajudar na organização",
-                "DETI",
                 10,
-                "eventos@ua.pt"
+                "DETI"
         );
 
         assertNotNull(op.getId());
@@ -34,18 +34,18 @@ class OpportunityServiceTest {
     @Test
     void createOpportunity_invalidTitle() {
         assertThrows(InvalidOpportunityException.class, () ->
-                service.create("", "Desc", "DETI", 10, "deti@ua.pt"));
+                service.createOpportunity("", "eventos@ua.pt", "Desc", 10, "DETI"));
     }
 
     @Test
     void createOpportunity_invalidPoints() {
         assertThrows(InvalidOpportunityException.class, () ->
-                service.create("Evento", "Desc", "DETI", 0, "deti@ua.pt"));
+                service.createOpportunity("Evento", "eventos@ua.pt", "Desc", 0, "DETI"));
     }
 
     @Test
     void createOpportunity_invalidOrganization() {
         assertThrows(InvalidOpportunityException.class, () ->
-                service.create("Evento", "Desc", "Empresa", 10, "empresa@gmail.com"));
+                service.createOpportunity("Evento", "empresa@gmail.com", "Desc", 10, "Empresa"));
     }
 }

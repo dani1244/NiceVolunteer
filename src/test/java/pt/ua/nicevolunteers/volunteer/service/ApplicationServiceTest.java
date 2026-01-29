@@ -4,22 +4,24 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import pt.ua.nicevolunteers.volunteer.domain.Volunteer;
 import pt.ua.nicevolunteers.volunteer.domain.exception.InvalidApplicationException;
 import pt.ua.nicevolunteers.volunteer.domain.opportunity.Opportunity;
+import pt.ua.nicevolunteers.volunteer.domain.opportunity.OpportunityStatus;
 import pt.ua.nicevolunteers.volunteer.repository.OpportunityRepository;
 import pt.ua.nicevolunteers.volunteer.repository.VolunteerRepository;
 
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ApplicationServiceTest {
 
     @Autowired
-    private ApplicationService applicationService;
+    private ApplicationService service;
 
     @Autowired
     private VolunteerRepository volunteerRepository;
@@ -27,67 +29,45 @@ class ApplicationServiceTest {
     @Autowired
     private OpportunityRepository opportunityRepository;
 
-    @BeforeEach
-    void cleanDatabase() {
-        applicationService.deleteAllApplications();
-        opportunityRepository.deleteAll();
-        volunteerRepository.deleteAll();
-    }
-
     @Test
     void apply_success() {
-        Volunteer v = volunteerRepository.save(
-                new Volunteer("Ana", "ana@ua.pt", "password123"));
+        Volunteer v = volunteerRepository.save(new Volunteer("Ana", "ana@ua.pt", "123456"));
+        Opportunity op = opportunityRepository.save(
+                new Opportunity("Evento", "eventos@ua.pt", "Desc", 10, "DETI", OpportunityStatus.OPEN)
+        );
 
-        Opportunity o = opportunityRepository.save(
-                new Opportunity("Mentoria",
-                        "deti@ua.pt",          // promoter CORRETO
-                        "Apoio a alunos",
-                        10,
-                        "Aveiro"));
-
-        applicationService.apply(v.getId(), o.getId());
-
-        assertEquals(1, applicationService.countApplications());
+        service.apply(v.getId(), op.getId());
+        assertEquals(1, service.countApplications());
     }
 
     @Test
     void apply_twice_same_volunteer_same_opportunity_should_fail() {
-        Volunteer v = volunteerRepository.save(
-                new Volunteer("Ana", "ana@ua.pt", "password123"));
+        Volunteer v = volunteerRepository.save(new Volunteer("Ana", "ana@ua.pt", "123456"));
+        Opportunity op = opportunityRepository.save(
+                new Opportunity("Evento", "eventos@ua.pt", "Desc", 10, "DETI", OpportunityStatus.OPEN)
+        );
 
-        Opportunity o = opportunityRepository.save(
-                new Opportunity("Mentoria",
-                        "deti@ua.pt",
-                        "Apoio a alunos",
-                        10,
-                        "Aveiro"));
+        service.apply(v.getId(), op.getId());
 
-        applicationService.apply(v.getId(), o.getId());
-
-        assertThrows(InvalidApplicationException.class,
-                () -> applicationService.apply(v.getId(), o.getId()));
+        assertThrows(InvalidApplicationException.class, () ->
+                service.apply(v.getId(), op.getId()));
     }
 
     @Test
     void apply_with_non_existing_volunteer_should_fail() {
-        Opportunity o = opportunityRepository.save(
-                new Opportunity("Mentoria",
-                        "deti@ua.pt",
-                        "Apoio a alunos",
-                        10,
-                        "Aveiro"));
+        Opportunity op = opportunityRepository.save(
+                new Opportunity("Evento", "eventos@ua.pt", "Desc", 10, "DETI", OpportunityStatus.OPEN)
+        );
 
-        assertThrows(InvalidApplicationException.class,
-                () -> applicationService.apply(UUID.randomUUID(), o.getId()));
+        assertThrows(InvalidApplicationException.class, () ->
+                service.apply(UUID.randomUUID(), op.getId()));
     }
 
     @Test
     void apply_with_non_existing_opportunity_should_fail() {
-        Volunteer v = volunteerRepository.save(
-                new Volunteer("Ana", "ana@ua.pt", "password123"));
+        Volunteer v = volunteerRepository.save(new Volunteer("Ana", "ana@ua.pt", "123456"));
 
-        assertThrows(InvalidApplicationException.class,
-                () -> applicationService.apply(v.getId(), UUID.randomUUID()));
+        assertThrows(InvalidApplicationException.class, () ->
+                service.apply(v.getId(), UUID.randomUUID()));
     }
 }
