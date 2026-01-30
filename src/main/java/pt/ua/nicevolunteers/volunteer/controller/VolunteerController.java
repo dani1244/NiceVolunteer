@@ -26,7 +26,10 @@ public class VolunteerController {
         Volunteer volunteer = service.register(
                 request.name(),
                 request.email(),
-                request.password()
+                request.password(),
+                request.bio(),
+                request.skills(),
+                request.interests()
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(volunteer);

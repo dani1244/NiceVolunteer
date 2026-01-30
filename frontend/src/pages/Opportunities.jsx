@@ -4,6 +4,8 @@ import { getOpenOpportunities } from "../services/opportunityService";
 
 export default function Opportunities() {
   const [opportunities, setOpportunities] = useState([]);
+  const [filteredOpportunities, setFilteredOpportunities] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -11,16 +13,37 @@ export default function Opportunities() {
     loadOpportunities();
   }, []);
 
+  useEffect(() => {
+    filterOpportunities();
+  }, [searchTerm, opportunities]);
+
   const loadOpportunities = async () => {
     try {
       const data = await getOpenOpportunities();
       setOpportunities(data);
+      setFilteredOpportunities(data);
     } catch (err) {
       setError("Erro ao carregar oportunidades");
       console.error(err);
     } finally {
       setLoading(false);
     }
+  };
+
+  const filterOpportunities = () => {
+    if (!searchTerm.trim()) {
+      setFilteredOpportunities(opportunities);
+      return;
+    }
+
+    const term = searchTerm.toLowerCase();
+    const filtered = opportunities.filter((opp) =>
+      opp.title?.toLowerCase().includes(term) ||
+      opp.description?.toLowerCase().includes(term) ||
+      opp.location?.toLowerCase().includes(term) ||
+      opp.promoter?.toLowerCase().includes(term)
+    );
+    setFilteredOpportunities(filtered);
   };
 
   if (loading) {
@@ -38,13 +61,39 @@ export default function Opportunities() {
         <p>Encontre oportunidades que correspondem ao seu perfil</p>
       </div>
 
-      {opportunities.length === 0 ? (
+      <div className="search-section">
+        <input
+          type="text"
+          placeholder="Pesquisar por título, descrição, local ou promotor..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
+        />
+        {searchTerm && (
+          <button
+            onClick={() => setSearchTerm("")}
+            className="clear-search"
+            aria-label="Limpar pesquisa"
+          >
+            ✕
+          </button>
+        )}
+      </div>
+
+      {filteredOpportunities.length === 0 && opportunities.length > 0 ? (
+        <div className="empty-state">
+          <p>Nenhuma oportunidade encontrada para "{searchTerm}".</p>
+          <button onClick={() => setSearchTerm("")} className="btn-secondary">
+            Limpar Pesquisa
+          </button>
+        </div>
+      ) : opportunities.length === 0 ? (
         <div className="empty-state">
           <p>Não há oportunidades disponíveis no momento.</p>
         </div>
       ) : (
         <div className="opportunities-grid">
-          {opportunities.map((opp) => (
+          {filteredOpportunities.map((opp) => (
             <div key={opp.id} className="opportunity-card">
               <div className="opportunity-header">
                 <h3>{opp.title}</h3>

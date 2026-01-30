@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import api from "../api/api";
+import applicationService from "../services/applicationService";
+import pointsService from "../services/pointsService";
 
 export default function Profile() {
   const { user, isAuthenticated } = useAuth();
@@ -22,13 +23,13 @@ export default function Profile() {
 
   const loadProfileData = async () => {
     try {
-      const [appsResponse, pointsResponse] = await Promise.all([
-        api.get(`/api/volunteers/${user.id}/applications`),
-        api.get(`/api/volunteers/${user.id}/points`)
+      const [applications, pointsData] = await Promise.all([
+        applicationService.getVolunteerApplications(user.id),
+        pointsService.getBalance(user.id)
       ]);
 
-      setApplications(appsResponse.data);
-      setPoints(pointsResponse.data.totalPoints || 0);
+      setApplications(applications);
+      setPoints(pointsData.balance || 0);
     } catch (err) {
       console.error("Erro ao carregar perfil:", err);
     } finally {
