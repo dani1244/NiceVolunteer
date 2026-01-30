@@ -28,7 +28,7 @@ public class VolunteerRegistrationSteps {
     @When("the volunteer submits the registration")
     public void the_volunteer_submits_the_registration() {
         try {
-            volunteerService.register(name, email, password);
+            volunteerService.register(name, email, password, null, null, null);
         } catch (Exception e) {
             this.exception = e;
         }

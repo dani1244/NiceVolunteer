@@ -24,7 +24,10 @@ class VolunteerServiceTest {
         Volunteer v = service.register(
                 "Ana Silva",
                 "ana.silva@ua.pt",
-                "StrongPass123!"
+                "StrongPass123!",
+                null,
+                null,
+                null
         );
 
         assertNotNull(v.getId());
@@ -34,14 +37,14 @@ class VolunteerServiceTest {
     @Test
     void shouldRejectVolunteerWithNonInstitutionalEmail() {
         assertThrows(InvalidEmailException.class, () ->
-                service.register("Ana", "ana@gmail.com", "StrongPass123!")
+                service.register("Ana", "ana@gmail.com", "StrongPass123!", null, null, null)
         );
     }
 
     @Test
     void shouldRejectVolunteerWithWeakPassword() {
         assertThrows(WeakPasswordException.class, () ->
-                service.register("Ana", "ana@ua.pt", "123")
+                service.register("Ana", "ana@ua.pt", "123", null, null, null)
         );
     }
 }

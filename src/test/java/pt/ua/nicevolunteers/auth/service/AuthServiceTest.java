@@ -23,7 +23,7 @@ class AuthServiceTest {
         // given
         String email = "user1@ua.pt";
         String password = "Password123";
-        volunteerService.register("User Test", email, password);
+        volunteerService.register("User Test", email, password, null, null, null);
 
         // when / then
         assertDoesNotThrow(() -> authService.login(email, password));
@@ -34,7 +34,7 @@ class AuthServiceTest {
         // given
         String email = "user2@ua.pt";
         String password = "Password123";
-        volunteerService.register("User Test", email, password);
+        volunteerService.register("User Test", email, password, null, null, null);
 
         // when / then
         assertThrows(InvalidCredentialsException.class,

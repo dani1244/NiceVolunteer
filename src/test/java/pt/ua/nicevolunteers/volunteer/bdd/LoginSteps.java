@@ -22,7 +22,7 @@ public class LoginSteps {
 
     @Given("a registered volunteer with email {string} and password {string}")
     public void a_registered_volunteer(String email, String password) {
-        volunteerService.register("John", email, password);
+        volunteerService.register("John", email, password, null, null, null);
     }
 
     @When("the volunteer tries to login with email {string} and password {string}")
