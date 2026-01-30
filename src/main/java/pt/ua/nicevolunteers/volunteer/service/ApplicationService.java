@@ -1,59 +1,102 @@
 package pt.ua.nicevolunteers.volunteer.service;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.annotation.PostConstruct;
+import pt.ua.nicevolunteers.application.domain.Application;
+import pt.ua.nicevolunteers.application.domain.ApplicationStatus;
+import pt.ua.nicevolunteers.application.repository.ApplicationRepository;
+import pt.ua.nicevolunteers.volunteer.domain.Volunteer;
 import pt.ua.nicevolunteers.volunteer.domain.exception.InvalidApplicationException;
+import pt.ua.nicevolunteers.volunteer.domain.opportunity.Opportunity;
 import pt.ua.nicevolunteers.volunteer.repository.OpportunityRepository;
 import pt.ua.nicevolunteers.volunteer.repository.VolunteerRepository;
 
 @Service
+@Transactional
 public class ApplicationService {
 
     private final VolunteerRepository volunteerRepository;
     private final OpportunityRepository opportunityRepository;
-
-    private Set<String> applications;
+    private final ApplicationRepository applicationRepository;
 
     public ApplicationService(VolunteerRepository volunteerRepository,
-                              OpportunityRepository opportunityRepository) {
+                              OpportunityRepository opportunityRepository,
+                              ApplicationRepository applicationRepository) {
         this.volunteerRepository = volunteerRepository;
         this.opportunityRepository = opportunityRepository;
+        this.applicationRepository = applicationRepository;
     }
 
-    @PostConstruct
-    public void init() {
-        this.applications = new HashSet<>();
+    public Application apply(UUID volunteerId, UUID opportunityId) {
+        Volunteer volunteer = volunteerRepository.findById(volunteerId)
+                .orElseThrow(InvalidApplicationException::new);
+
+        Opportunity opportunity = opportunityRepository.findById(opportunityId)
+                .orElseThrow(InvalidApplicationException::new);
+
+        if (!opportunity.isOpen()) {
+            throw new InvalidApplicationException();
+        }
+
+        if (applicationRepository.existsByVolunteerIdAndOpportunityId(volunteerId, opportunityId)) {
+            throw new InvalidApplicationException();
+        }
+
+        Application application = new Application(volunteer, opportunity);
+        return applicationRepository.save(application);
     }
 
-    public void apply(UUID volunteerId, UUID opportunityId) {
-
+    public List<Application> getVolunteerApplications(UUID volunteerId) {
         if (!volunteerRepository.existsById(volunteerId)) {
             throw new InvalidApplicationException();
         }
+        return applicationRepository.findByVolunteerId(volunteerId);
+    }
 
+    public List<Application> getOpportunityApplications(UUID opportunityId) {
         if (!opportunityRepository.existsById(opportunityId)) {
             throw new InvalidApplicationException();
         }
-
-        String key = volunteerId + ":" + opportunityId;
-
-        if (applications.contains(key)) {
-            throw new InvalidApplicationException();
-        }
-
-        applications.add(key);
+        return applicationRepository.findByOpportunityId(opportunityId);
     }
 
-    public int countApplications() {
-        return applications.size();
+    public Application acceptApplication(UUID applicationId) {
+        Application application = applicationRepository.findById(applicationId)
+                .orElseThrow(InvalidApplicationException::new);
+
+        application.accept();
+        return applicationRepository.save(application);
+    }
+
+    public Application rejectApplication(UUID applicationId) {
+        Application application = applicationRepository.findById(applicationId)
+                .orElseThrow(InvalidApplicationException::new);
+
+        application.reject();
+        return applicationRepository.save(application);
+    }
+
+    public Application completeApplication(UUID applicationId) {
+        Application application = applicationRepository.findById(applicationId)
+                .orElseThrow(InvalidApplicationException::new);
+
+        application.complete();
+        return applicationRepository.save(application);
+    }
+
+    public long countApplications() {
+        return applicationRepository.count();
     }
 
     public void deleteAllApplications() {
-        applications.clear();
+        applicationRepository.deleteAll();
+    }
+
+    public List<Application> getPendingApplicationsForOpportunity(UUID opportunityId) {
+        return applicationRepository.findByOpportunityIdAndStatus(opportunityId, ApplicationStatus.PENDING);
     }
 }
