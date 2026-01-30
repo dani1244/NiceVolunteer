@@ -23,7 +23,7 @@ public class PointsTransaction {
     private String description;
     private LocalDateTime timestamp;
 
-    protected PointsTransaction() {}
+    protected PointsTransaction() { }
 
     public PointsTransaction(Volunteer volunteer, int points, String description) {
         this.volunteer = volunteer;

@@ -16,7 +16,7 @@ public class Volunteer {
     private String hashedPassword;
     private int points = 0;
 
-    protected Volunteer() {}
+    protected Volunteer() { }
 
     public Volunteer(String name, String email, String hashedPassword) {
         this.id = UUID.randomUUID();
@@ -25,11 +25,33 @@ public class Volunteer {
         this.hashedPassword = hashedPassword;
     }
 
-    public UUID getId() { return id; }
-    public String getEmail() { return email; }
-    public String getName() { return name; }
-    public String getHashedPassword() { return hashedPassword; }
-    public int getPoints() { return points; }
+    public UUID getId() {
+
+
+        return id;
+
+
+    }
+    public String getEmail() {
+
+        return email;
+
+    }
+    public String getName() {
+
+        return name;
+
+    }
+    public String getHashedPassword() {
+
+        return hashedPassword;
+
+    }
+    public int getPoints() {
+
+        return points;
+
+    }
 
     public void addPoints(int points) {
         this.points += points;

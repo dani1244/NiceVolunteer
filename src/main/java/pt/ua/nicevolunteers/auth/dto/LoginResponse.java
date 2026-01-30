@@ -1,3 +1,3 @@
 package pt.ua.nicevolunteers.auth.dto;
 
-public record LoginResponse(String message) {}
+public record LoginResponse(String message) {  }

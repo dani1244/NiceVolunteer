@@ -1,0 +1,10 @@
+target/
+.git/
+.github/
+.idea/
+.vscode/
+*.md
+*.log
+.DS_Store
+node_modules/
+frontend/

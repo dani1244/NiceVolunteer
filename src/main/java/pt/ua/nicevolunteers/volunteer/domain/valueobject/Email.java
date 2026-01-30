@@ -24,7 +24,9 @@ public class Email {
     }
 
     private boolean isValidInstitutionalEmail(String email) {
-        if (email == null) return false;
+        if (email == null) {
+            return false;
+        }
 
         String regex = "^[A-Za-z0-9._%+-]+@ua\\.pt$";
         return Pattern.matches(regex, email);
