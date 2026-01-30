@@ -17,7 +17,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        service.login(request.email(), request.password());
-        return ResponseEntity.ok().build();
+        var response = service.login(request.email(), request.password());
+        return ResponseEntity.ok(response);
     }
 }

@@ -27,4 +27,9 @@ public class VolunteerController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(volunteer);
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<Volunteer> registerAlias(@RequestBody VolunteerRequest request) {
+        return register(request);
+    }
 }

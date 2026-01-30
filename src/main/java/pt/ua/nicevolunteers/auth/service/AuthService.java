@@ -6,6 +6,10 @@ import pt.ua.nicevolunteers.auth.exception.InvalidCredentialsException;
 import pt.ua.nicevolunteers.volunteer.domain.Volunteer;
 import pt.ua.nicevolunteers.volunteer.repository.VolunteerRepository;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 @Service
 public class AuthService {
 
@@ -15,7 +19,7 @@ public class AuthService {
         this.volunteerRepository = volunteerRepository;
     }
 
-    public void login(String email, String rawPassword) {
+    public Map<String, Object> login(String email, String rawPassword) {
 
         Volunteer volunteer = volunteerRepository
                 .findByEmail(email)
@@ -26,5 +30,14 @@ public class AuthService {
         if (!volunteer.getHashedPassword().equals(hashedInput)) {
             throw new InvalidCredentialsException();
         }
+
+        // Generate a simple token (in production, use JWT)
+        String token = "Bearer-" + UUID.randomUUID().toString();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", token);
+        response.put("volunteer", volunteer);
+
+        return response;
     }
 }
