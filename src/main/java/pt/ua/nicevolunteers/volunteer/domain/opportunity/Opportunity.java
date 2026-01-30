@@ -1,5 +1,6 @@
 package pt.ua.nicevolunteers.volunteer.domain.opportunity;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
@@ -19,6 +20,8 @@ public class Opportunity {
     private String description;
     private int points;
     private String location;
+    private String category;
+    private LocalDate date;
 
     @Enumerated(EnumType.STRING)
     private OpportunityStatus status;
@@ -26,11 +29,16 @@ public class Opportunity {
     protected Opportunity() { }
 
     public Opportunity(String title, String promoter, String description, int points, String location) {
-        this(title, promoter, description, points, location, OpportunityStatus.OPEN);
+        this(title, promoter, description, points, location, null, null, OpportunityStatus.OPEN);
     }
 
     public Opportunity(String title, String promoter, String description, int points,
                        String location, OpportunityStatus status) {
+        this(title, promoter, description, points, location, null, null, status);
+    }
+
+    public Opportunity(String title, String promoter, String description, int points,
+                       String location, String category, LocalDate date, OpportunityStatus status) {
 
         if (title == null || title.isBlank()) {
             throw new InvalidOpportunityException("Title is required");
@@ -50,6 +58,8 @@ public class Opportunity {
         this.description = description;
         this.points = points;
         this.location = location;
+        this.category = category;
+        this.date = date;
         this.status = status;
     }
 
@@ -83,6 +93,16 @@ public class Opportunity {
     public String getLocation() {
 
         return location;
+
+    }
+    public String getCategory() {
+
+        return category;
+
+    }
+    public LocalDate getDate() {
+
+        return date;
 
     }
     public OpportunityStatus getStatus() {

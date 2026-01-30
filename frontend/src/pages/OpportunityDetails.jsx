@@ -41,13 +41,14 @@ export default function OpportunityDetails() {
     setSuccess("");
 
     try {
-      await api.post(`/api/opportunities/${id}/apply`, {
-        volunteerId: user.id
+      await api.post("/api/applications", {
+        volunteerId: user.id,
+        opportunityId: id
       });
       setSuccess("Candidatura submetida com sucesso!");
       setTimeout(() => navigate("/profile"), 2000);
     } catch (err) {
-      setError(err.response?.data?.message || "Erro ao candidatar-se");
+      setError(err.response?.data?.message || "Erro no servidor. Tente novamente.");
     } finally {
       setApplying(false);
     }
