@@ -23,13 +23,14 @@ public class Opportunity {
     @Enumerated(EnumType.STRING)
     private OpportunityStatus status;
 
-    protected Opportunity() {}
+    protected Opportunity() { }
 
     public Opportunity(String title, String promoter, String description, int points, String location) {
         this(title, promoter, description, points, location, OpportunityStatus.OPEN);
     }
 
-    public Opportunity(String title, String promoter, String description, int points, String location, OpportunityStatus status) {
+    public Opportunity(String title, String promoter, String description, int points,
+                       String location, OpportunityStatus status) {
 
         if (title == null || title.isBlank()) {
             throw new InvalidOpportunityException("Title is required");
@@ -52,13 +53,43 @@ public class Opportunity {
         this.status = status;
     }
 
-    public UUID getId() { return id; }
-    public String getTitle() { return title; }
-    public String getPromoter() { return promoter; }
-    public String getDescription() { return description; }
-    public int getPoints() { return points; }
-    public String getLocation() { return location; }
-    public OpportunityStatus getStatus() { return status; }
+    public UUID getId() {
+
+
+        return id;
+
+
+    }
+    public String getTitle() {
+
+        return title;
+
+    }
+    public String getPromoter() {
+
+        return promoter;
+
+    }
+    public String getDescription() {
+
+        return description;
+
+    }
+    public int getPoints() {
+
+        return points;
+
+    }
+    public String getLocation() {
+
+        return location;
+
+    }
+    public OpportunityStatus getStatus() {
+
+        return status;
+
+    }
 
     public void close() {
         this.status = OpportunityStatus.CLOSED;
@@ -72,6 +103,10 @@ public class Opportunity {
     }
 
     public boolean isOpen() {
+
+
         return this.status == OpportunityStatus.OPEN;
+
+
     }
 }

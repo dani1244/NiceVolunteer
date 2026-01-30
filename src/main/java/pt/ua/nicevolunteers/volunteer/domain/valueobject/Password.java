@@ -10,7 +10,7 @@ public class Password {
 
     private String hash;
 
-    protected Password() {}
+    protected Password() { }
 
     public Password(String rawPassword) {
         if (rawPassword == null || rawPassword.length() < 8) {
@@ -29,8 +29,12 @@ public class Password {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Password)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Password)) {
+            return false;
+        }
         Password password = (Password) o;
         return Objects.equals(hash, password.hash);
     }

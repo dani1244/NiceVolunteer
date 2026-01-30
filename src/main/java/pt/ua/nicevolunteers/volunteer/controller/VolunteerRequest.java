@@ -4,4 +4,4 @@ public record VolunteerRequest(
         String name,
         String email,
         String password
-) {}
+) { }
