@@ -1,6 +1,10 @@
 package pt.ua.nicevolunteers.promoter.domain;
 
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
 import pt.ua.nicevolunteers.volunteer.domain.exception.InvalidEmailException;
 
 import java.util.UUID;
